@@ -13,7 +13,7 @@ setup(name='python-pcl',
       ext_modules=[Extension(
                    "pcl",
                    ["pcl.pyx", "minipcl.cpp"],
-                    include_dirs=[np.get_include(), "/usr/include/pcl-1.5", "/usr/include/eigen3/", "/usr/local/include/pcl-1.5", "/usr/local/include/eigen3/"],
+                    include_dirs=[np.get_include(), "/usr/include/pcl-1.7", "/usr/include/eigen3/", "/usr/local/include/pcl-1.7", "/usr/local/include/eigen3/"],
                     libraries=["pcl_segmentation", "pcl_io", "OpenNI",
                                "usb-1.0", "pcl_filters", "pcl_sample_consensus",
                                "pcl_features", "pcl_surface", "pcl_search", "pcl_kdtree", "pcl_octree",
