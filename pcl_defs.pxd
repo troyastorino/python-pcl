@@ -65,7 +65,7 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
-        void process (PointCloud[I])
+        void process (PointCloud[O])
 
 ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 
@@ -201,3 +201,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
 
+cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization":
+    cdef cppclass CloudViewer:
+        CloudViewer(string)
+        void showCloud(shared_ptr[PointCloud[PointXYZ]], string)
