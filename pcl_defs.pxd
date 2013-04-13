@@ -77,7 +77,7 @@ cdef extern from "Eigen/src/Core/util/Memory.h" namespace "Eigen":
     cdef cppclass aligned_allocator[T]:
         pass
 
-ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
+ctypedef aligned_allocator[PointXYZ] aligned_allocator_t
 ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
 
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
@@ -89,7 +89,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void addPointsFromInputCloud()
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(AlignedPointTVector_t)	
+        int getOccupiedVoxelCenters(AlignedPointTVector_t)
         void deleteVoxelAtPoint(PointXYZ)
 
 ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
@@ -205,3 +205,11 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
     cdef cppclass CloudViewer:
         CloudViewer(string)
         void showCloud(shared_ptr[PointCloud[PointXYZ]], string)
+
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PCLVisualizer:
+        PCLVisualizer(string, bool)
+        #        setBackgroundColor(double, double, double, int)
+        bool addPointCloud(shared_ptr[PointCloud[PointXYZ]], string, int)
+        void spinOnce(int, bool)
+        bool wasStopped()

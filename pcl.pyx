@@ -630,19 +630,34 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
-cdef class CloudViewer:
+cdef class PCLVisualizer:
     """
-    Class: CloudViewer
-    Visualizes a point cloud.  Wraps PCL CloudViewier
+    Class: PCLVisualizer
+    Basic visualization object.  Wraps PCLVisualizer
     """
-    cdef cpp.CloudViewer *me
+    cdef cpp.PCLVisualizer *me
 
-    def __cinit__(self, string window_name):
-        self.me = new cpp.CloudViewer(window_name)
+    def __cinit__(self, string window_name="PCL Visualizer", bool create_interactor=True):
+        self.me = new cpp.PCLVisualizer(window_name, create_interactor)
 
     def __dealloc__(self):
         del self.me
 
-    def show_cloud(self, PointCloud point_cloud, cloud_name):
-        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>point_cloud.thisptr
-        self.me.showCloud(ccloud.makeShared(), cloud_name)
+    def spin_once(self, int time=1, bool force_redraw=False):
+        """
+        Calls the interactor and updates the screen once.  Needed for the Visualizer to run with the interactor.
+        """
+        self.me.spinOnce(time, force_redraw)
+
+    def add_point_cloud(self, PointCloud cloud, string cloud_name="cloud", int viewport=0):
+        """
+        Adds a point cloud to the viewer
+        """
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>cloud.thisptr
+        return self.me.addPointCloud(ccloud.makeShared(), cloud_name, viewport)
+
+    def was_stopped(self):
+        """
+        Checks if the PCLVisualizer window was closed.
+        """
+        return self.me.wasStopped()
