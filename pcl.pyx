@@ -643,18 +643,33 @@ cdef class PCLVisualizer:
     def __dealloc__(self):
         del self.me
 
+    def add_coordinate_system(self, double scale=1.0, int viewport=0):
+        self.me.addCoordinateSystem(scale, viewport)
+
+    def add_point_cloud(self, PointCloud cloud, string cloud_id="cloud", int viewport=0):
+        """
+        Adds a point cloud to the viewer
+        """
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>cloud.thisptr
+        return self.me.addPointCloud(ccloud.makeShared(), cloud_id, viewport)
+
+    def close(self):
+        self.me.close()
+
+    def set_background_color(self, double r, double g, double b, int viewport=0):
+        self.me.setBackgroundColor(r, g, b, viewport)
+
+    def set_point_cloud_rendering_properties(self, int rendering_property, double value, string cloud_id="cloud", int viewport=0):
+        return self.me.setPointCloudRenderingProperties(rendering_property, value, cloud_id, viewport)
+
+    def spin(self):
+        self.me.spin()
+
     def spin_once(self, int time=1, bool force_redraw=False):
         """
         Calls the interactor and updates the screen once.  Needed for the Visualizer to run with the interactor.
         """
         self.me.spinOnce(time, force_redraw)
-
-    def add_point_cloud(self, PointCloud cloud, string cloud_name="cloud", int viewport=0):
-        """
-        Adds a point cloud to the viewer
-        """
-        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>cloud.thisptr
-        return self.me.addPointCloud(ccloud.makeShared(), cloud_name, viewport)
 
     def was_stopped(self):
         """

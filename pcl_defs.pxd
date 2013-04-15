@@ -209,7 +209,11 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
 cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
     cdef cppclass PCLVisualizer:
         PCLVisualizer(string, bool)
-        #        setBackgroundColor(double, double, double, int)
+        void addCoordinateSystem(double, int)
         bool addPointCloud(shared_ptr[PointCloud[PointXYZ]], string, int)
+        void close()
+        void setBackgroundColor(double, double, double, int)
+        bool setPointCloudRenderingProperties(int, double, string, int)
+        void spin()
         void spinOnce(int, bool)
         bool wasStopped()
