@@ -643,8 +643,16 @@ cdef class PCLVisualizer:
     def __dealloc__(self):
         del self.me
 
-    def add_coordinate_system(self, double scale=1.0, int viewport=0):
-        self.me.addCoordinateSystem(scale, viewport)
+    def add_coordinate_system(self, double scale=1.0, translation=np.array([0, 0, 0]), int viewport=0):
+        """
+        Function: add_coordinate_system
+        Addes coordinate axes to the pcl visualization system
+
+        Parameters:
+        scale - *double* scale of the axes
+        translation - *ndarray* translation array of shape (3,)
+        """
+        self.me.addCoordinateSystem(scale, translation[0], translation[1], translation[2], viewport)
 
     def add_point_cloud(self, PointCloud cloud, string cloud_id="cloud", int viewport=0):
         """
@@ -653,8 +661,14 @@ cdef class PCLVisualizer:
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>cloud.thisptr
         return self.me.addPointCloud(ccloud.makeShared(), cloud_id, viewport)
 
+    def add_text_3d(self, string text, position, double text_scale=1.0, double r=1.0, double g=1.0, double b=1.0, string text_id="", int viewport=0):
+        return self.me.addText3D(text, to_point_t(position), text_scale, r, g, b, text_id, viewport)
+
     def close(self):
         self.me.close()
+
+    def init_camera_parameters(self):
+        self.me.initCameraParameters()
 
     def set_background_color(self, double r, double g, double b, int viewport=0):
         self.me.setBackgroundColor(r, g, b, viewport)

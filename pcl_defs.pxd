@@ -210,8 +210,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
     cdef cppclass PCLVisualizer:
         PCLVisualizer(string, bool)
         void addCoordinateSystem(double, int)
+        void addCoordinateSystem(double, float, float, float, int)
         bool addPointCloud(shared_ptr[PointCloud[PointXYZ]], string, int)
+        bool addText3D(string, PointXYZ, double, double, double, double, string, int)
         void close()
+        void initCameraParameters()
         void setBackgroundColor(double, double, double, int)
         bool setPointCloudRenderingProperties(int, double, string, int)
         void spin()
